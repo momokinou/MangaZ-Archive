@@ -61,10 +61,10 @@ def get_serie(driver: uc.Chrome, paywall: False):
         for e in manga_providers:
             manga_data["informations"]["providers"].append(e.text)
         
-        manga_data["informations"]["description"] = driver.find_element(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[3]/p').text
+        manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
 
         # Get chapter list
-        chapter_list = driver.find_elements(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[2]/div/ul/li')
+        chapter_list = driver.find_elements(By.CSS_SELECTOR, 'li.item.series_sort')
         for li in chapter_list:
             manga_data["links"].append({
                 "number": li.find_element(By.XPATH, './/a[2]/span').text,

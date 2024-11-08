@@ -52,7 +52,10 @@ driver_path = r'./chromedriver-win64/chromedriver.exe'
 brave = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 option = uc.ChromeOptions()
 option.binary_location = brave
-option.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+option.add_argument("--headless")  # Active le mode headless
+option.add_argument("--no-sandbox")  # Option recommandée en mode headless
+option.add_argument("--disable-dev-shm-usage")  # Réduit l'utilisation de la mémoire partagée
+# option.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 driver = uc.Chrome(driver_executable_path=driver_path, options=option)
 
 

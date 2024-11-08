@@ -47,7 +47,7 @@ def get_book(driver: uc.Chrome, paywall: False):
         # for e in manga_providers:
         #     manga_data["title]["informations"]["providers"].append(e.text)//*[@id="contents"]/div[1]/div/div[2]/div[4]/div[1]/p
         
-        manga_data["informations"]["description"] = driver.find_element(By.XPATH, '//*[@id="contents"]/div[1]/div/div[2]/div[3]/div[1]/p').text
+        manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
 
         # Get chapter list
         chapter_list = driver.find_elements(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[2]/div/ul/li')
