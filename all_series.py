@@ -84,7 +84,7 @@ for serie in series_list:
     print(f"Title: {manga['informations']['title']}")
     for chapter in manga['links']:
         if os.path.exists(f'{output_dir}/{chapter["number"]}'):
-            print('Chapter already exist')
+            print(f'Chapter {chapter["number"]} already exist')
         else:
             print(f'Creating chapter {chapter["number"]}')
             download_chapter(chapter['reader_link'], f'{output_dir}/{chapter["number"]}')
