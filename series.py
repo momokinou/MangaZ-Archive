@@ -50,18 +50,24 @@ def get_serie(driver: uc.Chrome, paywall: False):
             )
 
         # Get manga infos
-        manga_info = driver.find_element(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[1]')
-        manga_name = manga_info.find_element(By.XPATH, './/h2')
-        manga_authors = manga_info.find_elements(By.XPATH, './/ul/li[1]/a')
-        manga_providers = manga_info.find_elements(By.XPATH, './/ul/li[2]/a')
-        title = manga_name.text
-        manga_data["informations"]["title"] = title
-        for e in manga_authors:
-            manga_data["informations"]["authors"].append(e.text)
-        for e in manga_providers:
-            manga_data["informations"]["providers"].append(e.text)
+        try:
+            manga_info = driver.find_element(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[1]')
+            manga_name = manga_info.find_element(By.XPATH, './/h2')
+            manga_authors = manga_info.find_elements(By.XPATH, './/ul/li[1]/a')
+            manga_providers = manga_info.find_elements(By.XPATH, './/ul/li[2]/a')
+            title = manga_name.text
+            manga_data["informations"]["title"] = title
+            for e in manga_authors:
+                manga_data["informations"]["authors"].append(e.text)
+            for e in manga_providers:
+                manga_data["informations"]["providers"].append(e.text)
+        except NoSuchElementException:
+            print("Can't find author data")
         
-        manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
+        try:
+            manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
+        except NoSuchElementException:
+            print("Can't find description")
 
         # Get chapter list
         chapter_list = driver.find_elements(By.CSS_SELECTOR, 'li.item.series_sort')

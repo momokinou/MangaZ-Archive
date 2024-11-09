@@ -38,19 +38,24 @@ def get_book(driver: uc.Chrome, paywall: False):
         # Get manga infos
         manga_info = driver.find_element(By.XPATH, '//*[@id="contents"]/div[1]/div/div[2]')
         manga_name = manga_info.find_element(By.XPATH, './/h1')
-        manga_authors = manga_info.find_elements(By.XPATH, './/ul[2]/li/span/a')
-        # manga_providers = manga_info.find_elements(By.XPATH, './/ul/li[2]/a')
-        title = manga_name.text
-        manga_data["informations"]["title"] = title
-        for e in manga_authors:
-            manga_data["informations"]["authors"].append(e.text)
-        # for e in manga_providers:
-        #     manga_data["title]["informations"]["providers"].append(e.text)//*[@id="contents"]/div[1]/div/div[2]/div[4]/div[1]/p
-        
-        manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
+        try:
+            manga_authors = manga_info.find_elements(By.XPATH, './/ul[2]/li/span/a')
+                    # manga_providers = manga_info.find_elements(By.XPATH, './/ul/li[2]/a')
+            title = manga_name.text
+            manga_data["informations"]["title"] = title
+            for e in manga_authors:
+                manga_data["informations"]["authors"].append(e.text)
+                # for e in manga_providers:
+                # manga_data["title]["informations"]["providers"].append(e.text)//*[@id="contents"]/div[1]/div/div[2]/div[4]/div[1]/p
+        except NoSuchElementException:
+            print("Can't find author data")
+
+        try:
+            manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
+        except NoSuchElementException:
+            print("Can't find description")
 
         # Get chapter list
-        chapter_list = driver.find_elements(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[2]/div/ul/li')
         manga_data["links"].append({
             "number": '1',
             "link": driver.find_element(By.CSS_SELECTOR, "button.open-viewer.book-begin.ga").get_attribute("data-url"),
