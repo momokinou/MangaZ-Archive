@@ -53,7 +53,7 @@ def get_book(driver: uc.Chrome, paywall: False):
         chapter_list = driver.find_elements(By.XPATH, '//*[@id="seriesContents"]/div[2]/div[2]/div/ul/li')
         manga_data["links"].append({
             "number": '1',
-            "link": manga_info.find_element(By.XPATH, ".//div[1]/p[2]/button").get_attribute("data-url"),
+            "link": driver.find_element(By.CSS_SELECTOR, "button.open-viewer.book-begin.ga").get_attribute("data-url"),
             "reader_link": "https://vw.mangaz.com/virgo/view/" + driver.current_url.split('/')[-1] + "/i:0",
         })
 
