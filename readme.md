@@ -5,6 +5,7 @@ pip install selenium
 pip install undetected-chromedriver
 pip install beautifulsoup4
 pip install requests
+pip install pillow
 
 and a chromedriver:
 <https://chromedriver.storage.googleapis.com/index.html?path=114.0.5735.90/>
