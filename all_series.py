@@ -76,6 +76,8 @@ for serie in series_list:
             )
         driver.find_element(By.XPATH, '//*[@id="loginMainColumn"]/div/form/div/input[1]').click()
         time.sleep(2)
+    
+    if 'r18' in driver.current_url:
         output_dir += './r18'
 
     if 'book' in driver.current_url:
