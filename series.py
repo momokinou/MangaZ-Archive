@@ -10,8 +10,8 @@ import re
 import os
 import json
 
-def get_serie(driver: uc.Chrome, paywall: False):
-    output_dir = './output/series'
+def get_serie(driver: uc.Chrome, paywall: False, output_dir):
+    output_dir += './output/series'
     os.makedirs(output_dir, exist_ok=True)
 
     if paywall:
@@ -67,12 +67,26 @@ def get_serie(driver: uc.Chrome, paywall: False):
             })
             counter += 1
 
+        urlnbr = driver.current_url.split('/')[-1]
         sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title)
+        if sanitized_title == "":
+            sanitized_title += urlnbr
         output_dir += f"/{sanitized_title}"
         os.makedirs(output_dir, exist_ok=True)
 
         if os.path.exists(f"{output_dir}/{sanitized_title}_data.json"):
             print('Serie already exist')
+            with open(f"{output_dir}/{sanitized_title}_data.json", 'r', encoding='utf-8') as file:
+                existing_json = json.load(file)
+            if existing_json["links"][0]["link"] == manga_data["links"][0]["link"]:
+                print('Same link')
+            else:
+                print('Different link')
+                output_dir += f'_{urlnbr}'
+                os.makedirs(output_dir, exist_ok=True)
+                file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
+                json.dump(manga_data, file, ensure_ascii=False, indent=4)
+                file.close()
         else:
             file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
             json.dump(manga_data, file, ensure_ascii=False, indent=4)
