@@ -25,13 +25,18 @@ def extract_page_number(order):
  
 # Function to download an image from a URL
 def download_image(url, path):
-    img_response = session.get(url)
-    if img_response.status_code == 200:
-        with open(path, 'wb') as img_file:
-            img_file.write(img_response.content)
-        # print(f"Downloaded: {os.path.basename(path)}")
-    else:
-        print(f"Failed to download {os.path.basename(path)}, status code: {img_response.status_code}")
+    try:
+        img_response = session.get(url)
+        if img_response.status_code == 200:
+            with open(path, 'wb') as img_file:
+                img_file.write(img_response.content)
+            # print(f"Downloaded: {os.path.basename(path)}")
+        else:
+            print(f"Failed to download {os.path.basename(path)}, status code: {img_response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to download {os.path.basename(path)} due to a request error: {e}")
+    except Exception as e:
+        print(f"Failed to download {os.path.basename(path)} due to an unexpected error: {e}")
  
 # Function to unscramble and save the image based on given crops data
 def scramble_image(image_path, crops, page_number, save_dir):

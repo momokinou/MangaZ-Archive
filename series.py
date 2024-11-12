@@ -18,21 +18,7 @@ def get_serie(driver: uc.Chrome, paywall: False):
     else:
         output_dir += './free'
 
-    # driver_path = r'./chromedriver-win64/chromedriver.exe'
-    # brave = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
-    # option = uc.ChromeOptions()
-    # # option.add_experimental_option("prefs", {
-    # #   "download.default_directory": r"./downloads",
-    # #   "download.prompt_for_download": False,
-    # #   "download.directory_upgrade": True,
-    # #   "safebrowsing.enabled": True
-    # # })
-    # option.binary_location = brave
-    # option.set_capability("goog:loggingPrefs", {"performance": "ALL"})
-    # driver = uc.Chrome(driver_executable_path=driver_path, options=option)
     try: 
-        # url = "https://www.mangaz.com/series/detail/223511"
-        # driver.get(url)
 
         manga_data = {
             "informations": {
@@ -77,8 +63,6 @@ def get_serie(driver: uc.Chrome, paywall: False):
                 "link": li.find_element(By.TAG_NAME, "a").get_attribute("href"),
                 "reader_link": "https://vw.mangaz.com/virgo/view/" + li.find_element(By.TAG_NAME, "a").get_attribute("href").rpartition('/')[-1] + "/i:0",
             })
-            # print('Number: ' + li.find_element(By.XPATH, './/a[2]/span').text)
-            # print('Link: ' + li.find_element(By.TAG_NAME, "a").get_attribute("href"))
 
         output_dir += f"/{title}"
         os.makedirs(output_dir, exist_ok=True)

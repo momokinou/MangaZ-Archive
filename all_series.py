@@ -90,8 +90,11 @@ for serie in series_list:
         if os.path.exists(f'{output_dir}/{chapter["number"]}'):
             print(f'Chapter {chapter["number"]} already exist')
         else:
-            print(f'Creating chapter {chapter["number"]}')
-            download_chapter(chapter['reader_link'], f'{output_dir}/{chapter["number"]}')
+            if chapter['reader_link'] == "":
+                print('Empty book. Nothing to download')
+            else:
+                print(f'Creating chapter {chapter["number"]}')
+                download_chapter(chapter['reader_link'], f'{output_dir}/{chapter["number"]}')
 
 # Fermeture du navigateur
 driver.close()

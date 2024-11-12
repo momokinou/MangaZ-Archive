@@ -55,12 +55,20 @@ def get_book(driver: uc.Chrome, paywall: False):
         except NoSuchElementException:
             print("Can't find description")
 
-        # Get chapter list
-        manga_data["links"].append({
-            "number": '1',
-            "link": driver.find_element(By.CSS_SELECTOR, "button.open-viewer.book-begin.ga").get_attribute("data-url"),
-            "reader_link": "https://vw.mangaz.com/virgo/view/" + driver.current_url.split('/')[-1] + "/i:0",
-        })
+        try:
+            # Get chapter list
+            manga_data["links"].append({
+                "number": '1',
+                "link": driver.find_element(By.CSS_SELECTOR, "button.open-viewer.book-begin.ga").get_attribute("data-url"),
+                "reader_link": "https://vw.mangaz.com/virgo/view/" + driver.current_url.split('/')[-1] + "/i:0",
+            })
+        except NoSuchElementException:
+            print(f'No content available for {title}. MangaZ does not have the license')
+            manga_data["links"].append({
+                "number": 'No content available. MangaZ does not have the license',
+                "link": "MangaZ does not have the license",
+                "reader_link": "",
+            })
 
         output_dir += f"/{title}"
         os.makedirs(output_dir, exist_ok=True)
