@@ -78,10 +78,12 @@ for serie in series_list:
         time.sleep(2)
 
     if 'book' in driver.current_url:
-        chapters_file, output_dir = book_management(driver)
+        chapters_file, new_dir = book_management(driver)
+        output_dir += new_dir
 
     if 'series' in driver.current_url:
-        chapters_file, output_dir = series_management(driver)
+        chapters_file, new_dir = series_management(driver)
+        output_dir += new_dir
 
     manga = read_json_file(chapters_file)
     for chapter in manga['links']:
