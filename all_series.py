@@ -92,4 +92,4 @@ for serie in series_list:
             download_chapter(chapter['reader_link'], f'{output_dir}/{chapter["number"]}')
 
 # Fermeture du navigateur
-driver.quit()
+driver.close()
