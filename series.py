@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException, ElementClickInter
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import DesiredCapabilities
+import re
 
 import os
 import json
@@ -64,17 +65,18 @@ def get_serie(driver: uc.Chrome, paywall: False):
                 "reader_link": "https://vw.mangaz.com/virgo/view/" + li.find_element(By.TAG_NAME, "a").get_attribute("href").rpartition('/')[-1] + "/i:0",
             })
 
-        output_dir += f"/{title}"
+        sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title)
+        output_dir += f"/{sanitized_title}"
         os.makedirs(output_dir, exist_ok=True)
 
-        if os.path.exists(f"{output_dir}/{title}_data.json"):
+        if os.path.exists(f"{output_dir}/{sanitized_title}_data.json"):
             print('Serie already exist')
         else:
-            file = open(f"{output_dir}/{title}_data.json", "x", encoding='utf8')
+            file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
             json.dump(manga_data, file, ensure_ascii=False, indent=4)
             file.close()
 
-        return f'{output_dir}/{title}_data.json', output_dir
+        return f'{output_dir}/{sanitized_title}_data.json', output_dir
 
 
     except TimeoutException:
