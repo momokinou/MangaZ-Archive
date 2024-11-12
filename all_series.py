@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException, ElementClickInter
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import DesiredCapabilities
+import re
 
 import os
 import json
@@ -97,7 +98,8 @@ for serie in series_list:
                 print('Empty book. Nothing to download')
             else:
                 print(f'Creating chapter {chapter["number"]}')
-                download_chapter(chapter['reader_link'], f'{output_dir}/{chapter["number"]}')
+                sanitized_chapter = re.sub(r'[<>:"/\\|?*]', '', chapter["number"])
+                download_chapter(chapter['reader_link'], f'{output_dir}/{sanitized_chapter}')
 
 # Fermeture du navigateur
 driver.close()
