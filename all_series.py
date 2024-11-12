@@ -21,7 +21,7 @@ def read_json_file(input_file):
     
     return data
 
-def book_management(driver: uc.Chrome):
+def book_management(driver: uc.Chrome, output_dir):
     paywall = False
     try:
         paywall_management = driver.find_element(By.XPATH, '//*[@id="contents"]/div[1]/div/div[2]/div[1]/div')
@@ -31,9 +31,9 @@ def book_management(driver: uc.Chrome):
     except NoSuchElementException:
         paywall = False
     
-    return book.get_book(driver, paywall)
+    return book.get_book(driver, paywall, output_dir)
 
-def series_management(driver: uc.Chrome):
+def series_management(driver: uc.Chrome, output_dir):
     paywall = False
     try:
         paywall_management = driver.find_element(By.XPATH, '//*[@id="contents"]/div[1]/div/div[2]/div[1]/div')
@@ -43,7 +43,7 @@ def series_management(driver: uc.Chrome):
     except NoSuchElementException:
         paywall = False
     
-    return series.get_serie(driver, paywall)
+    return series.get_serie(driver, paywall, output_dir)
 
 
 ######################################################################################
@@ -81,12 +81,12 @@ for serie in series_list:
         output_dir += './r18'
 
     if 'book' in driver.current_url:
-        chapters_file, new_dir = book_management(driver)
-        output_dir += new_dir
+        chapters_file, new_dir = book_management(driver, output_dir)
+        output_dir = new_dir
 
     if 'series' in driver.current_url:
-        chapters_file, new_dir = series_management(driver)
-        output_dir += new_dir
+        chapters_file, new_dir = series_management(driver, output_dir)
+        output_dir = new_dir
 
     manga = read_json_file(chapters_file)
     for chapter in manga['links']:
