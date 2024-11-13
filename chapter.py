@@ -4,6 +4,7 @@ import base64
 import json
 from bs4 import BeautifulSoup
 from PIL import Image
+import time
 
 # Initialize a session
 session = requests.Session()
@@ -33,6 +34,8 @@ def download_image(url, path):
             # print(f"Downloaded: {os.path.basename(path)}")
         else:
             print(f"Failed to download {os.path.basename(path)}, status code: {img_response.status_code}")
+            time.sleep(5)
+            download_image(url,path)
     except requests.exceptions.RequestException as e:
         print(f"Failed to download {os.path.basename(path)} due to a request error: {e}")
     except Exception as e:
