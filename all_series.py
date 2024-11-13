@@ -90,7 +90,7 @@ for serie in series_list:
         output_dir = new_dir
 
     manga = read_json_file(chapters_file)
-    for chapter in manga['links'][::-1]:
+    for chapter in manga['links']:
         if os.path.exists(f'{output_dir}/{chapter["number"]}'):
             print(f'Chapter {chapter["number"]} already exist')
         else:
@@ -101,5 +101,6 @@ for serie in series_list:
                 sanitized_chapter = re.sub(r'[<>:"/\\|?*]', '', chapter["number"])
                 download_chapter(chapter['reader_link'], f'{output_dir}/{sanitized_chapter}')
 
+print('No more to download. Update your json if needed.')
 # Fermeture du navigateur
 driver.close()

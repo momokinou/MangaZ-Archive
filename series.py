@@ -59,9 +59,9 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
         # Get chapter list
         chapter_list = driver.find_elements(By.CSS_SELECTOR, 'li.item.series_sort')
         counter = 1
-        for li in chapter_list:
+        for li in chapter_list[::-1]:
             manga_data["links"].append({
-                "number": li.find_element(By.XPATH, './/a[2]/span').text if li.find_element(By.XPATH, './/a[2]/span').text != "" else counter,
+                "number": li.find_element(By.XPATH, './/a[2]/span').text if li.find_element(By.XPATH, './/a[2]/span').text != "" else str(counter),
                 "link": li.find_element(By.TAG_NAME, "a").get_attribute("href"),
                 "reader_link": "https://vw.mangaz.com/virgo/view/" + li.find_element(By.TAG_NAME, "a").get_attribute("href").rpartition('/')[-1] + "/i:0",
             })
@@ -84,15 +84,15 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
                 print('Different link')
                 output_dir += f'_{urlnbr}'
                 os.makedirs(output_dir, exist_ok=True)
-                file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
+                file = open(f"{output_dir}/{sanitized_title}_{urlnbr}_data.json", "x", encoding='utf8')
                 json.dump(manga_data, file, ensure_ascii=False, indent=4)
                 file.close()
         else:
-            file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
+            file = open(f"{output_dir}/{sanitized_title}_{urlnbr}_data.json", "x", encoding='utf8')
             json.dump(manga_data, file, ensure_ascii=False, indent=4)
             file.close()
 
-        return f'{output_dir}/{sanitized_title}_data.json', output_dir
+        return f'{output_dir}/{sanitized_title}_{urlnbr}_data.json', output_dir
 
 
     except TimeoutException:
