@@ -78,21 +78,22 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
             print('Serie already exist')
             with open(f"{output_dir}/{sanitized_title}_data.json", 'r', encoding='utf-8') as file:
                 existing_json = json.load(file)
-            if existing_json["links"][0]["link"] == manga_data["links"][0]["link"]:
+            if (existing_json["links"][0]["link"] == manga_data["links"][0]["link"]) or (existing_json["links"][-1]["link"] == manga_data["links"][0]["link"]):
                 print('Same link')
             else:
                 print('Different link')
                 output_dir += f'_{urlnbr}'
+                sanitized_title += urlnbr
                 os.makedirs(output_dir, exist_ok=True)
                 file = open(f"{output_dir}/{sanitized_title}_{urlnbr}_data.json", "x", encoding='utf8')
                 json.dump(manga_data, file, ensure_ascii=False, indent=4)
                 file.close()
         else:
-            file = open(f"{output_dir}/{sanitized_title}_{urlnbr}_data.json", "x", encoding='utf8')
+            file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
             json.dump(manga_data, file, ensure_ascii=False, indent=4)
             file.close()
 
-        return f'{output_dir}/{sanitized_title}_{urlnbr}_data.json', output_dir
+        return f'{output_dir}/{sanitized_title}_data.json', output_dir
 
 
     except TimeoutException:
