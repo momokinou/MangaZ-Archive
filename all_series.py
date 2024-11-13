@@ -90,7 +90,7 @@ for serie in series_list:
         output_dir = new_dir
 
     manga = read_json_file(chapters_file)
-    for chapter in manga['links']:
+    for chapter in manga['links'][::-1]:
         if os.path.exists(f'{output_dir}/{chapter["number"]}'):
             print(f'Chapter {chapter["number"]} already exist')
         else:
