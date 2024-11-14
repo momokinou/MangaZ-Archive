@@ -9,7 +9,9 @@ pip install pillow
 pip install setup tool
 
 and a chromedriver:
-https://storage.googleapis.com/chrome-for-testing-public/130.0.6723.116/win64/chromedriver-win64.zip
+- For Windows: https://storage.googleapis.com/chrome-for-testing-public/130.0.6723.116/win64/chromedriver-win64.zip
+- For Linux: https://storage.googleapis.com/chrome-for-testing-public/130.0.6723.116/linux64/chromedriver-linux64.zip
+
 
 Unzip the chromedriver. Place the chromedriver FOLDER in the project folder.
 
