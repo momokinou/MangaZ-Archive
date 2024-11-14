@@ -13,7 +13,6 @@ pip install beautifulsoup4
 pip install requests
 pip install pillow
 pip install setup tool
->>>>>>> Stashed changes
 
 and a chromedriver:
 https://storage.googleapis.com/chrome-for-testing-public/130.0.6723.116/win64/chromedriver-win64.zip
