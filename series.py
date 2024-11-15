@@ -61,7 +61,7 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
         counter = 1
         for li in chapter_list[::-1]:
             manga_data["links"].append({
-                "number": li.find_element(By.XPATH, './/a[2]/span').text if li.find_element(By.XPATH, './/a[2]/span').text != "" else str(counter),
+                "number": li.find_element(By.XPATH, './/a[2]/span').text + (f'_{str(counter)}' if not li.find_element(By.XPATH, './/a[2]/span').text.isdigit() else '') if li.find_element(By.XPATH, './/a[2]/span').text != "" else str(counter),
                 "link": li.find_element(By.TAG_NAME, "a").get_attribute("href"),
                 "reader_link": "https://vw.mangaz.com/virgo/view/" + li.find_element(By.TAG_NAME, "a").get_attribute("href").rpartition('/')[-1] + "/i:0",
             })

@@ -38,8 +38,12 @@ def download_image(url, path):
             download_image(url,path)
     except requests.exceptions.RequestException as e:
         print(f"Failed to download {os.path.basename(path)} due to a request error: {e}")
+        time.sleep(5)
+        download_image(url,path)
     except Exception as e:
         print(f"Failed to download {os.path.basename(path)} due to an unexpected error: {e}")
+        time.sleep(5)
+        download_image(url,path)
  
 # Function to unscramble and save the image based on given crops data
 def scramble_image(image_path, crops, page_number, save_dir):
