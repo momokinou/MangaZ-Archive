@@ -72,7 +72,7 @@ def get_book(driver: uc.Chrome, paywall: False, output_dir):
             })
 
         urlnbr = driver.current_url.split('/')[-1]
-        sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title)
+        sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title).strip()
         if sanitized_title == "":
             sanitized_title += urlnbr
         output_dir += f"/{sanitized_title}"

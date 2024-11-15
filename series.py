@@ -68,7 +68,7 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
             counter += 1
 
         urlnbr = driver.current_url.split('/')[-1]
-        sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title)
+        sanitized_title = re.sub(r'[<>:"/\\|?*]', '', title).strip()
         if sanitized_title == "":
             sanitized_title += urlnbr
         output_dir += f"/{sanitized_title}"
