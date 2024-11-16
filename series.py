@@ -86,7 +86,7 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
                 output_dir += f'_{urlnbr}'
                 sanitized_title += urlnbr
                 os.makedirs(output_dir, exist_ok=True)
-                file = open(f"{output_dir}/{sanitized_title}_{urlnbr}_data.json", "x", encoding='utf8')
+                file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
                 json.dump(manga_data, file, ensure_ascii=False, indent=4)
                 file.close()
         else:
