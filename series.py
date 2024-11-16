@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import DesiredCapabilities
 import re
+from datetime import datetime
 
 import os
 import json
@@ -49,12 +50,12 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
             for e in manga_providers:
                 manga_data["informations"]["providers"].append(e.text)
         except NoSuchElementException:
-            print("Can't find author data")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Can't find author data")
         
         try:
             manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
         except NoSuchElementException:
-            print("Can't find description")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Can't find description")
 
         # Get chapter list
         chapter_list = driver.find_elements(By.CSS_SELECTOR, 'li.item.series_sort')
@@ -75,13 +76,13 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
         os.makedirs(output_dir, exist_ok=True)
 
         if os.path.exists(f"{output_dir}/{sanitized_title}_data.json"):
-            print('Serie already exist')
+            print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Serie already exist')
             with open(f"{output_dir}/{sanitized_title}_data.json", 'r', encoding='utf-8') as file:
                 existing_json = json.load(file)
             if (existing_json["links"][0]["link"] == manga_data["links"][0]["link"]) or (existing_json["links"][-1]["link"] == manga_data["links"][0]["link"]):
-                print('Same link')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Same link')
             else:
-                print('Different link')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Different link')
                 output_dir += f'_{urlnbr}'
                 sanitized_title += urlnbr
                 os.makedirs(output_dir, exist_ok=True)
@@ -97,4 +98,4 @@ def get_serie(driver: uc.Chrome, paywall: False, output_dir):
 
 
     except TimeoutException:
-        print("Website not loading (502 or 504) - Run again")
+        print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Website not loading (502 or 504) - Run again")

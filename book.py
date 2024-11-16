@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import DesiredCapabilities
 import re
+from datetime import datetime
 
 import os
 import json
@@ -49,12 +50,12 @@ def get_book(driver: uc.Chrome, paywall: False, output_dir):
                 # for e in manga_providers:
                 # manga_data["title]["informations"]["providers"].append(e.text)//*[@id="contents"]/div[1]/div/div[2]/div[4]/div[1]/p
         except NoSuchElementException:
-            print("Can't find author data")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Can't find author data")
 
         try:
             manga_data["informations"]["description"] = driver.find_element(By.CSS_SELECTOR, 'p.wordbreak').text
         except NoSuchElementException:
-            print("Can't find description")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Can't find description")
 
         try:
             # Get chapter list
@@ -64,7 +65,7 @@ def get_book(driver: uc.Chrome, paywall: False, output_dir):
                 "reader_link": "https://vw.mangaz.com/virgo/view/" + driver.current_url.split('/')[-1] + "/i:0",
             })
         except NoSuchElementException:
-            print(f'No content available for {title}. MangaZ does not have the license')
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} No content available for {title}. MangaZ does not have the license")
             manga_data["links"].append({
                 "number": 'No content available. MangaZ does not have the license',
                 "link": "MangaZ does not have the license",
@@ -79,13 +80,13 @@ def get_book(driver: uc.Chrome, paywall: False, output_dir):
         os.makedirs(output_dir, exist_ok=True)
 
         if os.path.exists(f"{output_dir}/{sanitized_title}_data.json"):
-            print('Book already exist. Verifying if same link')
+            print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Book already exist. Verifying if same link')
             with open(f"{output_dir}/{sanitized_title}_data.json", 'r', encoding='utf-8') as file:
                 existing_json = json.load(file)
             if existing_json["links"][0]["link"] == manga_data["links"][0]["link"]:
-                print('Same link')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Same link')
             else:
-                print('Different link')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Different link')
                 output_dir += f'_{urlnbr}'
                 os.makedirs(output_dir, exist_ok=True)
                 file = open(f"{output_dir}/{sanitized_title}_data.json", "x", encoding='utf8')
@@ -100,4 +101,4 @@ def get_book(driver: uc.Chrome, paywall: False, output_dir):
 
 
     except TimeoutException:
-        print("Website not loading (502 or 504) - Run again")
+        print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Website not loading (502 or 504) - Run again")

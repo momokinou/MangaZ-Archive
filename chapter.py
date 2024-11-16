@@ -5,6 +5,7 @@ import json
 from bs4 import BeautifulSoup
 from PIL import Image
 import time
+from datetime import datetime
 
 # Initialize a session
 session = requests.Session()
@@ -33,15 +34,15 @@ def download_image(url, path):
                 img_file.write(img_response.content)
             # print(f"Downloaded: {os.path.basename(path)}")
         else:
-            print(f"Failed to download {os.path.basename(path)}, status code: {img_response.status_code}")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Failed to download {os.path.basename(path)}, status code: {img_response.status_code}")
             time.sleep(5)
             download_image(url,path)
     except requests.exceptions.RequestException as e:
-        print(f"Failed to download {os.path.basename(path)} due to a request error: {e}")
+        print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Failed to download {os.path.basename(path)} due to a request error: {e}")
         time.sleep(5)
         download_image(url,path)
     except Exception as e:
-        print(f"Failed to download {os.path.basename(path)} due to an unexpected error: {e}")
+        print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Failed to download {os.path.basename(path)} due to an unexpected error: {e}")
         time.sleep(5)
         download_image(url,path)
  
@@ -107,7 +108,7 @@ def download_chapter(url, save_dir):
         
         # Validate scramble data
         if not validate_scramble(order['scramble']):
-            print(f"Invalid scramble data for {image_name}, skipping.")
+            print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Invalid scramble data for {image_name}, skipping.")
             continue
         
 

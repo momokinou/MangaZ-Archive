@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver import DesiredCapabilities
 import re
+from datetime import datetime
 
 import os
 import json
@@ -64,7 +65,7 @@ input_file = './test_multi_series.json'
 series_list = read_json_file(input_file)
 
 for serie in series_list:
-    print(f"Title: {serie['title']}, Link: {serie['link']}")
+    print(f"{datetime.now().strftime('%d-%m-%Y %H:%M:%S')} Title: {serie['title']}, Link: {serie['link']}")
     url = serie['link']
     driver.get(url)
     chapters_file = ''
@@ -92,15 +93,15 @@ for serie in series_list:
     manga = read_json_file(chapters_file)
     for chapter in manga['links']:
         if os.path.exists(f'{output_dir}/{chapter["number"]}'):
-            print(f'Chapter {chapter["number"]} already exist')
+            print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Chapter {chapter["number"]} already exist')
         else:
             if chapter['reader_link'] == "":
-                print('Empty book. Nothing to download')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Empty book. Nothing to download')
             else:
-                print(f'Creating chapter {chapter["number"]}')
+                print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} Creating chapter {chapter["number"]}')
                 sanitized_chapter = re.sub(r'[<>:"/\\|?*]', '', chapter["number"])
                 download_chapter(chapter['reader_link'], f'{output_dir}/{sanitized_chapter}')
 
-print('No more to download. Update your json if needed.')
+print(f'{datetime.now().strftime("%d-%m-%Y %H:%M:%S")} No more to download. Update your json if needed.')
 # Fermeture du navigateur
 driver.close()
