@@ -16,10 +16,13 @@ brave = 'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'
 option = uc.ChromeOptions()
 
 option.binary_location = brave
+option.add_argument("--headless")  # Active le mode headless
+option.add_argument("--no-sandbox")  # Option recommandée en mode headless
+option.add_argument("--disable-dev-shm-usage")  # Réduit l'utilisation de la mémoire partagée
 # option.set_capability("goog:loggingPrefs", {"performance": "ALL"})
 driver = uc.Chrome(driver_executable_path=driver_path, options=option)
 try: 
-    url = "https://r18.mangaz.com/title/"
+    url = "https://www.mangaz.com/title/index?category=&query=&sort=new&search=input"
     driver.get(url)
 
     manga_data = []
@@ -31,7 +34,7 @@ try:
 
     html = driver.find_element(By.XPATH, '/html')
     start_time = time.time()
-    duration = 120 # Durée en secondes
+    duration = 1800 # Durée en secondes
 
     while time.time() - start_time < duration:
         html.send_keys(Keys.ARROW_DOWN)  # Envoyer la commande
@@ -47,7 +50,7 @@ try:
         })
 
 
-    file = open(f"allr18series.json", "x", encoding='utf8')
+    file = open(f"allseriesv3.json", "x", encoding='utf8')
     # file.write(src)
     json.dump(manga_data, file, ensure_ascii=False, indent=4)
     file.close()
